@@ -1,0 +1,36 @@
+{
+  "manifest_version": "0.3",
+  "name": "unitrends-mcp",
+  "display_name": "Unitrends Backup MCP Server",
+  "version": "0.0.0",
+  "description": "MCP server for Unitrends Backup — list appliances, monitor jobs, browse recovery points, queue restores, and review alerts through AI assistants",
+  "long_description": "Provides AI assistants with structured access to Unitrends Backup appliances and the MSP Console. List protected assets, inspect running and historical backup jobs, browse recovery points, queue restores and replication, and review open alarms and RPO compliance reports through the Model Context Protocol.",
+  "author": { "name": "Wyre Technology", "url": "https://github.com/wyre-technology" },
+  "repository": { "type": "git", "url": "https://github.com/wyre-technology/unitrends-mcp" },
+  "homepage": "https://github.com/wyre-technology/unitrends-mcp",
+  "license": "Apache-2.0",
+  "keywords": ["unitrends", "backup", "bcdr", "msp", "kaseya"],
+  "server": {
+    "type": "node",
+    "entry_point": "dist/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/dist/index.js"],
+      "env": {
+        "UNITRENDS_BASE_URL": "${user_config.unitrends_base_url}",
+        "UNITRENDS_USERNAME": "${user_config.unitrends_username}",
+        "UNITRENDS_PASSWORD": "${user_config.unitrends_password}",
+        "UNITRENDS_VERIFY_TLS": "${user_config.unitrends_verify_tls}",
+        "MCP_TRANSPORT": "stdio"
+      }
+    }
+  },
+  "tools_generated": true,
+  "user_config": {
+    "unitrends_base_url": { "type": "string", "title": "Unitrends Base URL", "description": "Appliance or MSP Console base URL (e.g. https://unitrends.example.com)", "sensitive": false, "required": true },
+    "unitrends_username": { "type": "string", "title": "Unitrends Username", "description": "API username", "sensitive": false, "required": true },
+    "unitrends_password": { "type": "string", "title": "Unitrends Password", "description": "API password", "sensitive": true, "required": true },
+    "unitrends_verify_tls": { "type": "string", "title": "Verify TLS", "description": "'true' (default) or 'false' for self-signed appliances", "sensitive": false, "required": false }
+  },
+  "compatibility": { "platforms": ["darwin", "win32", "linux"], "runtimes": { "node": ">=18.0.0" }, "claude_desktop": ">=0.10.0" }
+}

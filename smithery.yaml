@@ -1,0 +1,24 @@
+# Smithery configuration file: https://smithery.ai/docs/config#smitheryyaml
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    required:
+      - unitrendsBaseUrl
+      - unitrendsUsername
+      - unitrendsPassword
+    properties:
+      unitrendsBaseUrl:
+        type: string
+        description: Unitrends appliance or MSP Console base URL
+      unitrendsUsername:
+        type: string
+        description: Unitrends API username
+      unitrendsPassword:
+        type: string
+        description: Unitrends API password
+      unitrendsVerifyTls:
+        type: string
+        description: "Verify TLS: 'true' (default) or 'false'"
+  commandFunction: |-
+    (config) => ({ command: 'node', args: ['dist/index.js'], env: { UNITRENDS_BASE_URL: config.unitrendsBaseUrl, UNITRENDS_USERNAME: config.unitrendsUsername, UNITRENDS_PASSWORD: config.unitrendsPassword, UNITRENDS_VERIFY_TLS: config.unitrendsVerifyTls, MCP_TRANSPORT: 'stdio' } })

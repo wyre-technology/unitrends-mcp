@@ -1,0 +1,70 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.wyre-technology/unitrends-mcp",
+  "title": "Unitrends Backup",
+  "description": "MCP server for Unitrends Backup — appliances, jobs, recovery points, restores, alerts.",
+  "repository": {
+    "url": "https://github.com/wyre-technology/unitrends-mcp",
+    "source": "github"
+  },
+  "version": "0.0.0",
+  "websiteUrl": "https://github.com/wyre-technology/unitrends-mcp",
+  "packages": [
+    {
+      "registryType": "oci",
+      "identifier": "ghcr.io/wyre-technology/unitrends-mcp:0.0.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "UNITRENDS_BASE_URL",
+          "description": "Base URL of the Unitrends appliance or MSP Console (e.g. https://unitrends.example.com)",
+          "isRequired": true,
+          "format": "string"
+        },
+        {
+          "name": "UNITRENDS_USERNAME",
+          "description": "Unitrends API username",
+          "isRequired": true,
+          "format": "string"
+        },
+        {
+          "name": "UNITRENDS_PASSWORD",
+          "description": "Unitrends API password",
+          "isRequired": true,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "UNITRENDS_VERIFY_TLS",
+          "description": "Verify TLS certificates. Set 'false' for self-signed appliances.",
+          "isRequired": false,
+          "default": "true",
+          "format": "string"
+        },
+        {
+          "name": "MCP_TRANSPORT",
+          "description": "Transport mode for the server. Set to 'stdio' for local CLI use; the image defaults to 'http' for gateway hosting.",
+          "isRequired": false,
+          "default": "stdio",
+          "format": "string"
+        },
+        {
+          "name": "AUTH_MODE",
+          "description": "Credential source: 'env' reads vars locally, 'gateway' expects header injection from the WYRE MCP Gateway.",
+          "isRequired": false,
+          "default": "env",
+          "format": "string"
+        },
+        {
+          "name": "LOG_LEVEL",
+          "description": "Log verbosity: debug, info, warn, error",
+          "isRequired": false,
+          "default": "info",
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}
