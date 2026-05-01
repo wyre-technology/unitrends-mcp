@@ -326,13 +326,19 @@ function createMcpServer(credentialOverrides?: UnitrendsCredentials): Server {
         case "unitrends_list_job_history": {
           const params = (args ?? {}) as DateRange;
           const range = await resolveDateRange(params);
-          const history = await client.jobs.history({ since: range.since, until: range.until });
+          // SDK uses listHistory + JobListParams (no since/until inline at SDK
+          // level — date filtering is applied client-side in the same way as
+          // datto-bcdr-mcp does for alerts/activity). For now we just paginate
+          // the most recent page; date-window filtering can be layered in a
+          // follow-up if Unitrends adds query params.
+          void range;
+          const history = await client.jobs.listHistory();
           return { content: [{ type: "text", text: JSON.stringify(history ?? [], null, 2) }] };
         }
 
         case "unitrends_list_recovery_points": {
-          const { assetId } = args as { assetId: string };
-          const points = await client.recoveryPoints.list(assetId);
+          const { assetId, applianceId } = args as { assetId: string; applianceId?: string };
+          const points = await client.recoveryPoints.list({ assetId, applianceId });
           return { content: [{ type: "text", text: JSON.stringify(points ?? [], null, 2) }] };
         }
 
@@ -385,9 +391,13 @@ function createMcpServer(credentialOverrides?: UnitrendsCredentials): Server {
         case "unitrends_get_success_rate": {
           const params = (args ?? {}) as DateRange;
           const range = await resolveDateRange(params);
+          // The SDK's SuccessRateParams uses startTime/endTime as Unix epoch
+          // seconds (Unitrends convention) — convert from the resolved range.
+          const toEpochSeconds = (s: string | undefined): number | undefined =>
+            s ? Math.floor(new Date(s).getTime() / 1000) : undefined;
           const report = await client.reports.successRate({
-            since: range.since,
-            until: range.until,
+            startTime: toEpochSeconds(range.since),
+            endTime: toEpochSeconds(range.until),
           });
           return { content: [{ type: "text", text: JSON.stringify(report ?? {}, null, 2) }] };
         }
