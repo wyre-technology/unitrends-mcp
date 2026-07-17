@@ -13,11 +13,14 @@ to AI assistants — list appliances and protected assets, monitor running and
 historical backup jobs, browse recovery points, queue restores and replication,
 and review open alarms and RPO compliance.
 
+- **Interactive Appliance Card (MCP Apps)**: `unitrends_get_appliance` renders as an interactive card in MCP Apps hosts (Claude Desktop/web); neutral by default, brandable via `window.__BRAND__` injection or `MCP_BRAND_*` env vars; plain-JSON behavior is unchanged in other hosts
+
 ## Tools
 
 | Tool | Purpose |
 | --- | --- |
 | `unitrends_list_appliances` | List appliances under the MSP Console |
+| `unitrends_get_appliance` | Get a single appliance's details (renders as an interactive card in MCP Apps hosts) |
 | `unitrends_list_assets` | List protected assets (require applianceId — elicits if missing) |
 | `unitrends_get_asset` | Fetch a single asset detail |
 | `unitrends_list_running_jobs` | Currently running and queued backup jobs |

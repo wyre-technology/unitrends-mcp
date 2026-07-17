@@ -4,6 +4,7 @@ describe('Unitrends MCP Server', () => {
   describe('Tool Definitions', () => {
     const expectedTools = [
       'unitrends_list_appliances',
+      'unitrends_get_appliance',
       'unitrends_list_assets',
       'unitrends_get_asset',
       'unitrends_list_running_jobs',
@@ -15,12 +16,13 @@ describe('Unitrends MCP Server', () => {
       'unitrends_get_success_rate',
     ];
 
-    it('should define all 10 tools', () => {
-      expect(expectedTools).toHaveLength(10);
+    it('should define all 11 tools', () => {
+      expect(expectedTools).toHaveLength(11);
     });
 
     it('should include appliance + asset tools', () => {
       expect(expectedTools).toContain('unitrends_list_appliances');
+      expect(expectedTools).toContain('unitrends_get_appliance');
       expect(expectedTools).toContain('unitrends_list_assets');
       expect(expectedTools).toContain('unitrends_get_asset');
     });
